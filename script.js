@@ -21,19 +21,21 @@ async function getWeather() {
     const { latitude, longitude, name, country } = geoData.results[0];
 
     // Step 2: Get weather for those coordinates
-    const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code`);
+   const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=relativehumidity_2m,windspeed_10m`);
     const weatherData = await weatherRes.json();
 
     const current = weatherData.current;
 
     // Step 3: Display the results
-    document.getElementById('cityName').textContent = `${name}, ${country}`;
-    document.getElementById('temp').textContent = `${Math.round(current.temperature_2m)}°C`;
-    document.getElementById('wind').textContent = `${current.wind_speed_10m} km/h`;
-    document.getElementById('humidity').textContent = `${current.relative_humidity_2m}%`;
-    document.getElementById('icon').textContent = getWeatherIcon(current.weather_code);
-    document.getElementById('description').textContent = getWeatherDescription(current.weather_code);
-
+    const current = weatherData.current_weather;
+const humidity = weatherData.hourly.relativehumidity_2m[0];
+const wind = weatherData.hourly.windspeed_10m[0];
+document.getElementById('cityName').textContent = `${name}, ${country}`;
+document.getElementById('temp').textContent = `${Math.round(current.temperature)}°C`;
+document.getElementById('wind').textContent = `${wind} km/h`;
+document.getElementById('humidity').textContent = `${humidity}%`;
+document.getElementById('icon').textContent = getWeatherIcon(current.weathercode);
+document.getElementById('description').textContent = getWeatherDescription(current.weathercode);
     result.classList.remove('hidden');
 
   } catch (err) {
