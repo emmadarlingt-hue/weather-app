@@ -24,8 +24,7 @@ async function getWeather() {
    const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=relativehumidity_2m,windspeed_10m`);
     const weatherData = await weatherRes.json();
 
-    const current = weatherData.current;
-
+   
     // Step 3: Display the results
     const current = weatherData.current_weather;
 const humidity = weatherData.hourly.relativehumidity_2m[0];
